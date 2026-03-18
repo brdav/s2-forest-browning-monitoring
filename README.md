@@ -56,7 +56,7 @@ Use the provided Conda environment:
 
 ```sh
 conda env create -f environment.yml
-conda activate <env-name-from-environment.yml>
+conda activate ndvi
 ```
 
 Then install the package in editable mode:
@@ -96,7 +96,7 @@ python processing/12_merge_features.py
 
 The final output dataset is a Zarr dataset with two versions:
 - `ndvi_dataset_temporal.zarr`: includes the full NDVI time series with chunking along the temporal dimension (shape: `(num_forest_pixels, num_timesteps)`) as well as the feature arrays
-- `ndvi_dataset_spatial.zarr`: includes the full NDVI time series with chunking along the spatial dimension (shape: `(num_timesteps, n_forest_pixels)`)
+- `ndvi_dataset_spatial.zarr`: includes the full NDVI time series with chunking along the spatial dimension (shape: `(num_timesteps, num_forest_pixels)`)
 
 A forest mask is also generated as a NumPy array (`forest_mask.npy`), which is used to map between the 1D dataset and the original 2D spatial layout.
 
