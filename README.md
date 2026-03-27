@@ -14,7 +14,7 @@ This repository contains:
     - `src/forest_browning/dataset.py`: dataset utilities
     - `src/forest_browning/mlp.py`: model architecture
     - `src/forest_browning/config.py`: constants
-    -
+    - `src/forest_browning/data_processing/`: dataset creation and feature engineering
 - analysis notebook (`notebooks/`),
     - `notebooks/plot_results.ipynb`: generates figures in `figs/`
 - event polygons and summary CSVs (`data/`),
@@ -38,61 +38,30 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-
 ---
 
-## Dataset creation (external repo: [`swiss-ndvi-processing`](https://github.com/geco-bern/swiss-ndvi-processing))
+## Dataset creation
 
-The processed dataset used by this project is created in a different repository: `swiss-ndvi-processing`, using the scripts in its `processing/` folder.
+The processed dataset used by this project is created in the `data_processing/` folder.
 
-### 1) Clone and set up `swiss-ndvi-processing`
-
-```sh
-git clone git@github.com:geco-bern/swiss-ndvi-processing.git
-cd swiss-ndvi-processing
-```
-
-Use the provided Conda environment:
+### Run processing pipeline in order
 
 ```sh
-conda env create -f environment.yml
-conda activate ndvi
+python forest_browning/data_processing/1_extract_swisstopo_dataset.py
+python forest_browning/data_processing/2_transpose_swisstopo_dataset.py
+python forest_browning/data_processing/3_add_dates.py
+python forest_browning/data_processing/4_load_dem_2m.py
+python forest_browning/data_processing/5_dem_2m_zarr_to_geotiff.py
+python forest_browning/data_processing/6_create_dem_features.py
+python forest_browning/data_processing/7_add_vegetation_height.py
+python forest_browning/data_processing/8_add_tree_species.py
+python forest_browning/data_processing/9_add_habitat.py
+python forest_browning/data_processing/10_add_missingness.py
+python forest_browning/data_processing/11_add_forest_mix_rate.py
+python forest_browning/data_processing/12_merge_features.py
 ```
 
-Then install the package in editable mode:
-
-```sh
-pip install -e .
-```
-
-### 2) Configure processing paths
-
-Edit:
-
-- `swiss-ndvi-processing/processing/config.py`
-
-to set output paths for your machine.
-
-### 3) Run processing pipeline in order
-
-From `swiss-ndvi-processing` root:
-
-```sh
-python processing/1_extract_swisstopo_dataset.py
-python processing/2_transpose_swisstopo_dataset.py
-python processing/3_add_dates.py
-python processing/4_load_dem_2m.py
-python processing/5_dem_2m_zarr_to_geotiff.py
-python processing/6_create_dem_features.py
-python processing/7_add_vegetation_height.py
-python processing/8_add_tree_species.py
-python processing/9_add_habitat.py
-python processing/10_add_missingness.py
-python processing/11_add_forest_mix_rate.py
-python processing/12_merge_features.py
-```
-
-### 4) Output dataset
+### Output dataset
 
 The final output dataset is a Zarr dataset with two versions:
 - `ndvi_dataset_temporal.zarr`: includes the full NDVI time series with chunking along the temporal dimension (shape: `(num_forest_pixels, num_timesteps)`) as well as the feature arrays
