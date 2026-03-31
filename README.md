@@ -74,6 +74,11 @@ to point to your local data storage:
 export FOREST_BROWNING_DATA_DIR=/your/local/data/dir
 ```
 
+Note: the tree species map used in this project is not publicly distributed in this repository.
+Please request access via
+https://www.envidat.ch/#/metadata/tree-species-map-of-switzerland
+and place the obtained `.tif` raster in `FOREST_BROWNING_DATA_DIR`.
+
 ---
 
 ## Dataset creation

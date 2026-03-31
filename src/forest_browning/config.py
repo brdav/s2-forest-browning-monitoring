@@ -18,6 +18,8 @@ SPATIAL_DATASET_ZARR = f"{DATA_DIR}/ndvi_dataset_spatial.zarr"
 FOREST_MASK = f"{DATA_DIR}/forest_mask.npy"
 DASK_LOCAL_DIRECTORY = f"{DATA_DIR}/dask_worker_space"
 
+TREE_SPECIES_PATH = f"{DATA_DIR}/tree_species_map_aoa_raster.tif"
+
 REF_BBOX = BoundingBox(left=2474090.0, bottom=1065110.0, right=2851370.0, top=1310530.0)
 REF_BBOX_4326 = BoundingBox(left=5.70, bottom=45.8, right=10.6, top=47.95)
 
