@@ -1,11 +1,18 @@
 """Set constants."""
 
+import os
+
 from rasterio.coords import BoundingBox
 from rasterio.crs import CRS
 from rasterio.transform import Affine
 
-
-DATA_DIR = "/data_2/scratch/sbiegel/processed"
+DATA_DIR = os.getenv("FOREST_BROWNING_DATA_DIR")
+if not DATA_DIR:
+    raise RuntimeError(
+        "Missing FOREST_BROWNING_DATA_DIR. Set it to your local data directory, "
+        "for example: export FOREST_BROWNING_DATA_DIR=/path/to/data"
+    )
+DATA_DIR = os.path.abspath(os.path.expanduser(DATA_DIR))
 TEMPORAL_DATASET_ZARR = f"{DATA_DIR}/ndvi_dataset_temporal.zarr"
 SPATIAL_DATASET_ZARR = f"{DATA_DIR}/ndvi_dataset_spatial.zarr"
 FOREST_MASK = f"{DATA_DIR}/forest_mask.npy"
